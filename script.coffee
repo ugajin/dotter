@@ -1,7 +1,9 @@
+@scale = 30
+
 init = () ->
-  @scale = 30
+  $('#dotter table').remove()
   table = $('<table></table>')
-  for i in [0..@scale]
+  for i in [0..@scale/2]
     tr = $('<tr></tr>')
     for j in [0..@scale]
       th = $('<th></th>')
@@ -11,6 +13,15 @@ init = () ->
   $(table).addClass('table table-bordered')
   $('#dotter').append($(table))
 
+  th_width = $('th').width()
+  $('th').height(th_width)
+
+  $('#dotter th').mousedown ->
+    down_mouse(this)
+  $('#dotter th').mouseover ->
+    over_mouse(this)
+  $('#dotter th').mouseup ->
+    up_mouse()
 
 down_mouse = (th) ->
   drawDot(th)
@@ -27,11 +38,16 @@ drawDot = (th) ->
   else
     $(th).addClass('drawed')
 
+changeScale = (scale) ->
+  console.log "change"
+  @scale = scale
+  init()
+
 $ ->
   init()
-  $('#dotter table tr th').mousedown ->
-    down_mouse(this)
-  $('#dotter table th').mouseover ->
-    over_mouse(this)
-  $('#dotter table th').mouseup ->
-    up_mouse()
+  $('#dotter .scale-10').click ->
+    changeScale(10)
+  $('#dotter .scale-20').click ->
+    changeScale(20)
+  $('#dotter .scale-30').click ->
+    changeScale(30)
